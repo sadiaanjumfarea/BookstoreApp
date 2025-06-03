@@ -1,21 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
 using BookstoreApp.API.Generators;
+using BookstoreApp.API.Models;
 
-namespace BookstoreApp.API.Controllers;
-
-[ApiController]
-[Route("api/[controller]")]
-public class BooksController : ControllerBase
+namespace BookstoreApp.API.Controllers
 {
-    [HttpGet]
-    public IActionResult GetBooks(
-        [FromQuery] string region = "en_US",
-        [FromQuery] int seed = 42,
-        [FromQuery] int page = 1,
-        [FromQuery] double avgLikes = 3.7,
-        [FromQuery] double avgReviews = 4.7)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class BooksController : ControllerBase
     {
-        var books = BookGenerator.GenerateBooks(region, seed, page, avgLikes, avgReviews);
-        return Ok(books);
+        // GET: api/books
+        [HttpGet]
+        public IActionResult GetBooks(
+            [FromQuery] string locale = "en",
+            [FromQuery] int seed = 42,
+            [FromQuery] int page = 1,
+            [FromQuery] double avgLikes = 1.2,
+            [FromQuery] double avgReviews = 2.5,
+            [FromQuery] int pageSize = 20)
+        {
+            var books = BookGenerator.GenerateBooks(locale, seed, page, avgLikes, avgReviews, pageSize);
+            return Ok(books); // returns JSON automatically
+        }
     }
 }
